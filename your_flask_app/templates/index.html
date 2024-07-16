@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codemate:sgYour Code Companion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: green;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        input[type=text] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type=submit] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
+        .response {
+            background-color: #f0f0f0;
+            padding: 20px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Codemate Chatbot</h1>
+        <form action="/chat" method="post">
+            <label for="message">Enter your message:</label>
+            <input type="text" id="message" name="message" placeholder="Type your message here...">
+            <input type="submit" value="Send">
+        </form>
+
+        <div class="response">
+            <h3>Chatbot Response:</h3>
+            <p id="chatbot-response">Waiting for response...</p>
+        </div>
+    </div>
+
+    <script>
+        const form = document.querySelector('form');
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const message = document.getElementById('message').value;
+            const responseElement = document.getElementById('chatbot-response');
+
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `message=${encodeURIComponent(message)}`
+            });
+
+            const data = await response.json();
+            responseElement.textContent = data.response;
+        });
+    </script>
+</body>
+</html>
